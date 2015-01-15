@@ -14,9 +14,10 @@ Sources
 -------
 
 Source files were downloaded from the following locations and compiled on Cedar-14:
-
+````
 http://zlib.net/zlib-1.2.8.tar.gz
 http://www.nasm.us/pub/nasm/releasebuilds/2.11.06/nasm-2.11.06.tar.gz
 http://downloads.sourceforge.net/project/libpng/libpng16/1.6.16/libpng-1.6.16.tar.gz
 http://sourceforge.net/projects/libjpeg-turbo/files/1.4.0/libjpeg-turbo-1.4.0.tar.gz
 http://sourceforge.net/projects/graphicsmagick/files/graphicsmagick/1.3.20/GraphicsMagick-1.3.20.tar.bz2
+````
