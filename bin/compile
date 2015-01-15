@@ -36,20 +36,20 @@ function install()
 
 # install dependencies
 echo "Installing zlib $ZLIB_VERSION" | arrow
-install "$ZLIB_TARBALL" "$TARGET_PATH/$ZLIB_DIR"
+install "$ZLIB_TARBALL" "$ZLIB_DIR"
 
 echo "Installing nasm $NASM_VERSION" | arrow
-install "$NASM_TARBALL" "$TARGET_PATH/$NASM_DIR"
+install "$NASM_TARBALL" "$NASM_DIR"
 
 echo "Installing libpng $LIBPNG_VERSION" | arrow
-install "$LIBPNG_TARBALL" "$TARGET_PATH/$LIBPNG_DIR"
+install "$LIBPNG_TARBALL" "$LIBPNG_DIR"
 
 echo "Installing libjpeg-turbo $LIBJPEG_TURBO_VERSION" | arrow
-install "$LIBJPEG_TURBO_TARBALL" "$TARGET_PATH/$LIBJPEG_TURBO_DIR"
+install "$LIBJPEG_TURBO_TARBALL" "$LIBJPEG_TURBO_DIR"
 
 # install main package
 echo "Installing graphicsmagick $GRAPHICS_MAGICK_VERSION" | arrow
-install "$GRAPHICS_MAGICK_TARBALL" "$TARGET_PATH/$GRAPHICS_MAGICK_DIR"
+install "$GRAPHICS_MAGICK_TARBALL" "$GRAPHICS_MAGICK_DIR"
 
 # configure path
 cat <<EOF > "$1/.profile.d/graphicsmagick.sh"
