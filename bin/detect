@@ -1,4 +1,6 @@
-#! /bin/bash
+#!/usr/bin/env bash
+# bin/detect <build-dir>
 
-# this buildpack can always be used
+# If the buildpack is here then assume it's meant to be run
+echo "graphicsmagick"
 exit 0

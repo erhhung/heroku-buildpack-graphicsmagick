@@ -1,103 +1,61 @@
-#! /bin/bash
-
-set -e
-
-source `dirname $0`/../configs.sh
-
-# parse and derive params
-BUILD_DIR=$1
-CACHE_DIR=$2
-LP_DIR=`cd $(dirname $0); cd ..; pwd`
-
-indent() {
-  sed -u 's/^/       /'
-}
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
 
 arrow() {
   sed -u 's/^/-----> /'
 }
 
-function mktmpdir() {
-  dir=$(mktemp -t graphicsmagick-$1-XXXX)
-  rm -rf $dir
-  mkdir -p $dir
-  echo $dir
+indent() {
+  sed -u 's/^/       /'
 }
 
-function package_download() {
-  local remote location
-  remote="$1"
-  location="$2"
+S3_BASE_URL="http://s3.amazonaws.com/crystalvista/devtools"
+TARGET_PATH="$1/vendor"
+VENDOR_PATH="/app/vendor"
+LIB_PATHS=""
+BIN_PATHS=""
 
-  mkdir -p $location
-  package="http://s3.amazonaws.com/${S3_BUCKET}/${remote}"
-  curl $package -s -o - | tar xzf - -C $location
+function install()
+{
+  local tarball destdir
+  tarball="$1"
+  destdir="$2"
+
+  mkdir -p "$TARGET_PATH/$destdir"
+  curl --fail --retry 3 --retry-delay 1 --connect-timeout 3 "$S3_BASE_URL/$tarball" -s -o - | tar zxf - -C "$TARGET_PATH/$destdir"
+
+  if [ -d "$TARGET_PATH/$destdir/lib" ]; then
+    LIB_PATHS="$VENDOR_PATH/$destdir/lib:$LIB_PATHS"
+  fi
+  if [ -d "$TARGET_PATH/$destdir/bin" ]; then
+    BIN_PATHS="$VENDOR_PATH/$destdir/bin:$BIN_PATHS"
+  fi
 }
 
+. "`dirname $0`/../config"
+
+# install dependencies
 echo "Installing zlib $ZLIB_VERSION" | arrow
-
-# we need this directory, it's our destination
-zlib_lib_path=$BUILD_DIR/vendor/zlib
-mkdir -p $zlib_lib_path
-
-# vendor directories
-VENDORED_ZLIB="$(mktmpdir libpng)"
-package_download "${ZLIB_REMOTE_PATH}" "${VENDORED_ZLIB}"
-
-cp -R $VENDORED_ZLIB/* $zlib_lib_path
-
-echo "Installing libpng $LIBPNG_VERSION" | arrow
-
-# we need this directory, it's our destination
-libpng_lib_path=$BUILD_DIR/vendor/libpng
-mkdir -p $libpng_lib_path
-
-# vendor directories
-VENDORED_LIBPNG="$(mktmpdir libpng)"
-package_download "${LIBPNG_REMOTE_PATH}" "${VENDORED_LIBPNG}"
-
-cp -R $VENDORED_LIBPNG/* $libpng_lib_path
+install "$ZLIB_TARBALL" "$TARGET_PATH/$ZLIB_DIR"
 
 echo "Installing nasm $NASM_VERSION" | arrow
+install "$NASM_TARBALL" "$TARGET_PATH/$NASM_DIR"
 
-# we need this directory, it's our destination
-nasm_lib_path=$BUILD_DIR/vendor/nasm
-mkdir -p $nasm_lib_path
-
-# vendor directories
-VENDORED_NASM="$(mktmpdir nasm)"
-package_download "${NASM_REMOTE_PATH}" "${VENDORED_NASM}"
-
-cp -R $VENDORED_NASM/* $nasm_lib_path
+echo "Installing libpng $LIBPNG_VERSION" | arrow
+install "$LIBPNG_TARBALL" "$TARGET_PATH/$LIBPNG_DIR"
 
 echo "Installing libjpeg-turbo $LIBJPEG_TURBO_VERSION" | arrow
+install "$LIBJPEG_TURBO_TARBALL" "$TARGET_PATH/$LIBJPEG_TURBO_DIR"
 
-# we need this directory, it's our destination
-libjpeg_turbo_lib_path=$BUILD_DIR/vendor/libjpeg-turbo
-mkdir -p $libjpeg_turbo_lib_path
-
-# vendor directories
-VENDORED_LIBJPEG_TURBO="$(mktmpdir libjpeg)"
-package_download "${LIBJPEG_TURBO_REMOTE_PATH}" "${VENDORED_LIBJPEG_TURBO}"
-
-cp -R $VENDORED_LIBJPEG_TURBO/* $libjpeg_turbo_lib_path
-
+# install main package
 echo "Installing graphicsmagick $GRAPHICS_MAGICK_VERSION" | arrow
+install "$GRAPHICS_MAGICK_TARBALL" "$TARGET_PATH/$GRAPHICS_MAGICK_DIR"
 
-# we need this directory, it's our destination
-gm_lib_path=$BUILD_DIR/vendor/graphicsmagick
-mkdir -p $gm_lib_path
+# configure path
+cat <<EOF > "$1/.profile.d/graphicsmagick.sh"
+export LD_LIBRARY_PATH="$LIB_PATHS:\$LD_LIBRARY_PATH"
+export PATH="$BIN_PATHS:\$PATH"
+EOF
 
-# vendor directories
-VENDORED_GRAPHICSMAGICK="$(mktmpdir graphicsmagick)"
-package_download "${REMOTE_PATH}" "${VENDORED_GRAPHICSMAGICK}"
-
-mkdir -p "$BUILD_DIR/bin/"
-cp $VENDORED_GRAPHICSMAGICK/bin/* "$BUILD_DIR/bin/"
-
-cp -R $VENDORED_GRAPHICSMAGICK/* $gm_lib_path
-
-echo "Building runtime environment for graphicsmagick" | arrow
-mkdir -p $BUILD_DIR/.profile.d
-echo "export PATH=\"\$HOME/bin:\$PATH\"" > $BUILD_DIR/.profile.d/graphicsmagick.sh
-echo "export LD_LIBRARY_PATH=\"/app/vendor/nasm/lib/:/app/vendor/libjpeg-turbo/lib/:/app/vendor/zlib/lib/:/app/vendor/libpng/lib/:/app/vendor/graphicsmagick/lib/:\$LD_LIBRARY_PATH\"" >> $BUILD_DIR/.profile.d/graphicsmagick.sh
+cd "$TARGET_PATH/$GRAPHICS_MAGICK_DIR/bin"
+echo "Installed: "`ls gm*` | indent

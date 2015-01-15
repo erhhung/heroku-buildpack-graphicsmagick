@@ -1,0 +1,19 @@
+ZLIB_VERSION="1.2.8"
+NASM_VERSION="2.11.06"
+LIBPNG_VERSION="1.6.16"
+LIBJPEG_TURBO_VERSION="1.4.0"
+GRAPHICS_MAGICK_VERSION="1.3.20"
+
+# path on s3 specified in 'compile'
+ZLIB_TARBALL="zlib-${ZLIB_VERSION}.tar.gz"
+NASM_TARBALL="nasm-${NASM_VERSION}.tar.gz"
+LIBPNG_TARBALL="libpng-${LIBPNG_VERSION}.tar.gz"
+LIBJPEG_TURBO_TARBALL="libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz"
+GRAPHICS_MAGICK_TARBALL="graphicsmagick-${GRAPHICS_MAGICK_VERSION}.tar.gz"
+
+# installed paths under /app/vendor
+ZLIB_DIR="zlib"
+NASM_DIR="nasm"
+LIBPNG_DIR="libpng"
+LIBJPEG_TURBO_DIR="libjpeg-turbo"
+GRAPHICS_MAGICK_DIR="graphicsmagick"
