@@ -1,5 +1,6 @@
 heroku-buildpack-graphicsmagick
 ===============================
+:exclamation: **PNG support is currently broken in the compiled binary.** JPEG support is unaffected.
 
 A Heroku buildpack that installs GraphicsMagick on the **Cedar-14** stack.  
 The GraphicsMagick version currently installed is 1.3.20.  
