@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
+# bin/compile BUILD_DIR CACHE_DIR ENV_DIR
 
 arrow() {
   sed -u 's/^/-----> /'
@@ -9,8 +9,12 @@ indent() {
   sed -u 's/^/       /'
 }
 
+BUILD_DIR=$1
+CACHE_DIR=$2
+BUILDPACK_DIR=`cd $(dirname $0)/..; pwd`
+
 S3_BASE_URL="https://s3.amazonaws.com/crystalvista/devtools"
-TARGET_PATH="$1/vendor"
+TARGET_PATH="$BUILD_DIR/vendor"
 VENDOR_PATH="/app/vendor"
 LIB_PATHS=""
 BIN_PATHS=""
@@ -33,7 +37,7 @@ function install()
   fi
 }
 
-. "`dirname $0`/../config"
+. "$BUILDPACK_DIR/config"
 
 # install dependencies
 echo "Installing zlib $ZLIB_VERSION" | arrow
@@ -53,7 +57,7 @@ echo "Installing graphicsmagick $GRAPHICS_MAGICK_VERSION" | arrow
 install "$GRAPHICS_MAGICK_TARBALL" "$GRAPHICS_MAGICK_DIR"
 
 # configure path
-cat <<EOF > "$1/.profile.d/graphicsmagick.sh"
+cat <<EOF > "$BUILD_DIR/.profile.d/graphicsmagick.sh"
 export LD_LIBRARY_PATH="$LIB_PATHS:\$LD_LIBRARY_PATH"
 export PATH="$BIN_PATHS:\$PATH"
 EOF

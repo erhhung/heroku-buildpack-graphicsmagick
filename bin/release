@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# bin/release <build-dir>
+# bin/release BUILD_DIR
 
 cat <<EOF
 ---
 config_vars:
-  PATH: $PATH:/app/vendor/graphicsmagick/bin
+  PATH: /app/vendor/graphicsmagick/bin:$PATH
 EOF
