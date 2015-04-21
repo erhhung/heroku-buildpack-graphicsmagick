@@ -1,3 +1,5 @@
+:exclamation: The Cedar-14 stack is now supported by [`https://github.com/mcollina/heroku-buildpack-graphicsmagick`](https://github.com/mcollina/heroku-buildpack-graphicsmagick), so please use that buildpack instead.
+
 heroku-buildpack-graphicsmagick
 ===============================
 :exclamation: **PNG support is currently broken in the compiled binary.** JPEG support is unaffected.
