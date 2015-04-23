@@ -12,7 +12,7 @@ indent() {
     CACHE_DIR=$2
 BUILDPACK_DIR=`cd $(dirname $0)/..; pwd`
 
- S3_BASE_URL="http://s3.amazonaws.com/"
+ S3_BASE_URL="http://s3.amazonaws.com"
 PROFILE_PATH="$BUILD_DIR/.profile.d"
  TARGET_PATH="$BUILD_DIR/vendor"
  VENDOR_PATH="/app/vendor"
