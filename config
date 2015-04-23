@@ -1,19 +1,24 @@
-ZLIB_VERSION="1.2.8"
-NASM_VERSION="2.11.06"
-LIBPNG_VERSION="1.6.16"
-LIBJPEG_TURBO_VERSION="1.4.0"
-GRAPHICS_MAGICK_VERSION="1.3.20"
+# package versions
+GRAPHICS_MAGICK_VERSION="1.3.18"
+  LIBJPEG_TURBO_VERSION="1.3.0"
+         LIBPNG_VERSION="1.6.17"
+           ZLIB_VERSION="1.2.8"
+           NASM_VERSION="2.10.09"
 
-# path on s3 specified in 'compile'
-ZLIB_TARBALL="zlib-${ZLIB_VERSION}.tar.gz"
-NASM_TARBALL="nasm-${NASM_VERSION}.tar.gz"
-LIBPNG_TARBALL="libpng-${LIBPNG_VERSION}.tar.gz"
-LIBJPEG_TURBO_TARBALL="libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz"
-GRAPHICS_MAGICK_TARBALL="graphicsmagick-${GRAPHICS_MAGICK_VERSION}.tar.gz"
+# package locations on s3
+ORIGINAL_S3_PATH="heroku-buildpack-graphicsmagick/cedar-14"
+OVERRIDE_S3_PATH="crystalvista/devtools"
+
+# package paths at s3.amazonaws.com
+GRAPHICS_MAGICK_TARBALL="${ORIGINAL_S3_PATH}/graphicsmagick-${GRAPHICS_MAGICK_VERSION}.tgz"
+  LIBJPEG_TURBO_TARBALL="${ORIGINAL_S3_PATH}/libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tgz"
+         LIBPNG_TARBALL="${OVERRIDE_S3_PATH}/libpng-${LIBPNG_VERSION}.tar.gz"
+           ZLIB_TARBALL="${ORIGINAL_S3_PATH}/zlib-${ZLIB_VERSION}.tgz"
+           NASM_TARBALL="${ORIGINAL_S3_PATH}/nasm-${NASM_VERSION}.tgz"
 
 # installed paths under /app/vendor
-ZLIB_DIR="zlib"
-NASM_DIR="nasm"
-LIBPNG_DIR="libpng"
-LIBJPEG_TURBO_DIR="libjpeg-turbo"
 GRAPHICS_MAGICK_DIR="graphicsmagick"
+  LIBJPEG_TURBO_DIR="libjpeg-turbo"
+         LIBPNG_DIR="libpng"
+           ZLIB_DIR="zlib"
+           NASM_DIR="nasm"
