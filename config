@@ -11,7 +11,7 @@ OVERRIDE_S3_PATH="crystalvista/devtools"
 
 # package paths at s3.amazonaws.com
 GRAPHICS_MAGICK_TARBALL="${ORIGINAL_S3_PATH}/graphicsmagick-${GRAPHICS_MAGICK_VERSION}.tgz"
-  LIBJPEG_TURBO_TARBALL="${ORIGINAL_S3_PATH}/libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tgz"
+  LIBJPEG_TURBO_TARBALL="${ORIGINAL_S3_PATH}/libjpeg_turbo-${LIBJPEG_TURBO_VERSION}.tgz"
          LIBPNG_TARBALL="${OVERRIDE_S3_PATH}/libpng-${LIBPNG_VERSION}.tar.gz"
            ZLIB_TARBALL="${ORIGINAL_S3_PATH}/zlib-${ZLIB_VERSION}.tgz"
            NASM_TARBALL="${ORIGINAL_S3_PATH}/nasm-${NASM_VERSION}.tgz"
